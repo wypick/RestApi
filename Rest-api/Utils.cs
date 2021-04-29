@@ -9,14 +9,14 @@ namespace RestApi
 {
     public class Utils
     {
-        public string GetValidGuid()
+        public static string GetValidGuid()
         {
             var guid = GenerateString(6) + "-" + GenerateString(4) + "-" + GenerateString(4) 
                 + "-" + GenerateString(4) + "-" + GenerateString(12);
             return guid;
         }
 
-        public string GenerateString(int length)
+        public static string GenerateString(int length)
         {
             var random = new Random();
             string characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
