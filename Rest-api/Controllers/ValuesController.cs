@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RestApi;
 using System.Text.Json;
+using MySqlConnector;
+using System.Data.SqlClient;
 
 namespace Rest_api.Controllers
 {
@@ -16,6 +18,8 @@ namespace Rest_api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
+           
+
             return new string[] { "value1", "value2" };
         }
         // GET api/values/5
@@ -28,10 +32,10 @@ namespace Rest_api.Controllers
 
         // POST api/values
         [HttpPost]
-        public string Post(string pass)
+        public string Post(Pass pass)
         {
-            var result = JsonSerializer.Deserialize<Pass>(pass);
-            return DbUtils.Post(result);
+            //var result = JsonSerializer.Deserialize<Pass>(pass);
+            return JsonSerializer.Serialize(DbUtils.Post(pass)); 
         }
 
         // PUT api/values/5 http://host:port/pass/

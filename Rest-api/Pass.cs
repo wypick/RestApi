@@ -13,9 +13,9 @@ namespace RestApi
         public string PersonName { get; set; }
         public string PersonSurname { get; set; }
         public string PersonPatronymic { get; set; }
-        public int PassportNumber { get; set; }
-        public DateTime DateFrom { get; set; }
-        public DateTime DateTo { get; set; }
+        public string PassportNumber { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
     }
 }
 
