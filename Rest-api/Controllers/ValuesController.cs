@@ -7,10 +7,12 @@ using RestApi;
 using System.Text.Json;
 using MySqlConnector;
 using System.Data.SqlClient;
+using System.Net;
+
 
 namespace Rest_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("pass")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
@@ -18,11 +20,22 @@ namespace Rest_api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-           
-
             return new string[] { "value1", "value2" };
         }
-        // GET api/values/5
+
+        // GET http://host:port/pass/{guid}
+        [HttpGet("validate/{guid}")]
+        public ActionResult<string> ValidateGet(string guid)
+        {
+            var result = DbUtils.Get(guid);
+            if(result == null)
+            {
+                return NotFound("404(NOT FOUND)");
+            }
+            return Ok(JsonSerializer.Serialize(result));
+        }
+
+        // GET http://host:port/pass/{guid}
         [HttpGet("{guid}")]
         public ActionResult<string> Get(string guid)
         {
@@ -30,7 +43,7 @@ namespace Rest_api.Controllers
             return JsonSerializer.Serialize(result);
         }
 
-        // POST api/values
+        // POST http://host:port/pass/
         [HttpPost]
         public string Post(Pass pass)
         {
@@ -38,15 +51,15 @@ namespace Rest_api.Controllers
             return JsonSerializer.Serialize(DbUtils.Post(pass)); 
         }
 
-        // PUT api/values/5 http://host:port/pass/
-        [HttpPut("{pass}")]
-        public void Put(string pass)
+        // PUT http://host:port/pass/
+        [HttpPut]
+        public IActionResult Put(Pass pass)
         {
-            var result = JsonSerializer.Deserialize<Pass>(pass);
-            DbUtils.Put(result);
+            DbUtils.Put(pass);
+            return Ok("200");
         }
 
-        // DELETE api/values/5
+        // DELETE http://host:port/pass/{guid}
         [HttpDelete("{guid}")]
         public void Delete(string guid)
         {

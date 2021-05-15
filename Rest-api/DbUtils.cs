@@ -4,12 +4,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using MySqlConnector;
+using System.Data;
 
 namespace RestApi
 {
     public class DbUtils
     {
-
         public static string bd = @"Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = DB; Integrated Security = True; Persist Security Info = False; Pooling = False; MultipleActiveResultSets = False; Connect Timeout = 60; Encrypt = False; TrustServerCertificate = True";
 
         public static Pass Get(string guid)
@@ -18,7 +18,31 @@ namespace RestApi
                         FROM Passes 
                         WHERE guid = '{guid}'";
 
-            return new Pass();
+            using (SqlConnection connection = new SqlConnection(bd))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    Pass result = null;
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        result = new Pass()
+                        {
+                            Guid = reader[0].ToString(),
+                            PersonName = reader[1].ToString(),
+                            PersonSurname = reader[2].ToString(),
+                            PersonPatronymic = reader[3].ToString(),
+                            PassportNumber = reader[4].ToString(),
+                        };
+                    }
+
+                    // Call Close when done reading.
+                    reader.Close();
+
+                    return result;
+                }
+            };
         }
 
         public static string Post(Pass pass)
@@ -41,17 +65,32 @@ namespace RestApi
 
         public static void Put(Pass pass)
         {
-            var sql = $@"UPDATE {pass.Guid}, {pass.PersonName}, {pass.PersonSurname}, 
-                                {pass.PersonPatronymic}, {pass.PassportNumber} 
-                        INTO Passes
+            var sql = $@"UPDATE Passes
+                        SET [PersonName] = '{pass.PersonName}', [PersonSurname] = '{pass.PersonSurname}', 
+                                [PersonPatronymic] = '{pass.PersonPatronymic}', [PassportNumber] = '{pass.PassportNumber}' 
                         WHERE guid = '{pass.Guid}'";
+            using (SqlConnection connection = new SqlConnection(bd))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            };
         }
 
         public static void Delete(string guid)
         {
-            var sql = $@"DELETE * FROM Passes
+            var sql = $@"DELETE FROM Passes
                         WHERE guid = '{guid}'";
+            using (SqlConnection connection = new SqlConnection(bd))
+            {
+                connection.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            };
         }
-
     }
 }
