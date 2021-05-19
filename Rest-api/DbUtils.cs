@@ -47,9 +47,16 @@ namespace RestApi
 
         public static string Post(Pass pass)
         {
+            var windowsTime = "19-05-2021";
+            var time = DateTime.Parse(windowsTime);
+            // DateTime.ParseExact(mystring, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+            /*DateTime date = DateTime.Now;
+            string time = date.ToString("yyyy-MM-dd HH:mm:ss.fff");*/
+
             var guid = Utils.GetValidGuid();
-            var sql = $@"INSERT INTO [dbo].[Passes] ([GUID], [PersonName], [PersonSurname], [PersonPatronymic], [PassportNumber]) VALUES ('{guid}', '{pass.PersonName}', '{pass.PersonSurname}', 
-                                '{pass.PersonPatronymic}', '{pass.PassportNumber}')";
+            var sql = $@"INSERT INTO [dbo].[Passes] ([GUID], [PersonName], [PersonSurname], [PersonPatronymic], [PassportNumber], [DateFrom], [DateTo]) 
+                            VALUES ('{guid}', '{pass.PersonName}', '{pass.PersonSurname}', 
+                                '{pass.PersonPatronymic}', '{pass.PassportNumber}', '{pass.DateFrom.ToString("yyyy-MM-dd HH:mm:ss.fff")}', '{pass.DateTo.ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
             using (SqlConnection connection = new SqlConnection(bd))
             {
                 connection.Open();
