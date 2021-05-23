@@ -23,16 +23,27 @@ namespace Rest_api.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET http://host:port/pass/{guid}
+        // GET http://host:port/pass/validate/{guid}
         [HttpGet("validate/{guid}")]
         public ActionResult<string> ValidateGet(string guid)
         {
+            var time = DateTime.Now;
+            
             var result = DbUtils.Get(guid);
-            if(result == null)
+            var a = result.DateTo.CompareTo(time);
+            if (result == null)
             {
                 return NotFound("404(NOT FOUND)");
             }
-            return Ok(JsonSerializer.Serialize(result));
+
+            else if ((result.DateFrom > time) || (result.DateTo < time))
+            {
+                return StatusCode(410);
+            }
+            else
+            {
+                return Ok("Валидно");
+            }
         }
 
         // GET http://host:port/pass/{guid}
@@ -40,30 +51,47 @@ namespace Rest_api.Controllers
         public ActionResult<string> Get(string guid)
         {
             var result = DbUtils.Get(guid);
-            return JsonSerializer.Serialize(result);
+            if (result == null)
+            {
+                return NotFound("404(NOT FOUND)");
+            }
+            return Ok(JsonSerializer.Serialize(result));
         }
 
         // POST http://host:port/pass/
         [HttpPost]
-        public string Post(Pass pass)
+        public IActionResult Post(Pass pass)
         {
             //var result = JsonSerializer.Deserialize<Pass>(pass);
-            return JsonSerializer.Serialize(DbUtils.Post(pass)); 
+            return Ok(JsonSerializer.Serialize(DbUtils.Post(pass))); 
         }
 
         // PUT http://host:port/pass/
         [HttpPut]
         public IActionResult Put(Pass pass)
         {
-            DbUtils.Put(pass);
-            return Ok("200");
+            if (DbUtils.Put(pass))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound("404(NOT FOUND)");
+            }
         }
 
         // DELETE http://host:port/pass/{guid}
         [HttpDelete("{guid}")]
-        public void Delete(string guid)
+        public IActionResult Delete(string guid)
         {
-            DbUtils.Delete(guid);
+            if (DbUtils.Delete(guid))
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound("404(NOT FOUND)");
+            }
         }
     }
 }

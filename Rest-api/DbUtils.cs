@@ -14,7 +14,7 @@ namespace RestApi
 
         public static Pass Get(string guid)
         {
-            var sql = $@"SELECT guid, personName, personSurname, personPatronymic, passportNumber 
+            var sql = $@"SELECT guid, personName, personSurname, personPatronymic, passportNumber, dateFrom, dateTo 
                         FROM Passes 
                         WHERE guid = '{guid}'";
 
@@ -34,6 +34,8 @@ namespace RestApi
                             PersonSurname = reader[2].ToString(),
                             PersonPatronymic = reader[3].ToString(),
                             PassportNumber = reader[4].ToString(),
+                            DateFrom = (DateTime)reader[5],
+                            DateTo = (DateTime)reader[6],
                         };
                     }
 
@@ -49,14 +51,12 @@ namespace RestApi
         {
             var windowsTime = "19-05-2021";
             var time = DateTime.Parse(windowsTime);
-            // DateTime.ParseExact(mystring, "dd-MM-yyyy", CultureInfo.InvariantCulture);
-            /*DateTime date = DateTime.Now;
-            string time = date.ToString("yyyy-MM-dd HH:mm:ss.fff");*/
 
             var guid = Utils.GetValidGuid();
             var sql = $@"INSERT INTO [dbo].[Passes] ([GUID], [PersonName], [PersonSurname], [PersonPatronymic], [PassportNumber], [DateFrom], [DateTo]) 
                             VALUES ('{guid}', '{pass.PersonName}', '{pass.PersonSurname}', 
-                                '{pass.PersonPatronymic}', '{pass.PassportNumber}', '{pass.DateFrom.ToString("yyyy-MM-dd HH:mm:ss.fff")}', '{pass.DateTo.ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
+                                '{pass.PersonPatronymic}', '{pass.PassportNumber}', '{pass.DateFrom.ToString("yyyy-MM-dd HH:mm:ss.fff")}',
+                                '{pass.DateTo.Add(new TimeSpan(23, 59, 59)).ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
             using (SqlConnection connection = new SqlConnection(bd))
             {
                 connection.Open();
@@ -67,26 +67,26 @@ namespace RestApi
 
                 return guid;
             };
-            
         }
 
-        public static void Put(Pass pass)
+        public static bool Put(Pass pass)
         {
             var sql = $@"UPDATE Passes
                         SET [PersonName] = '{pass.PersonName}', [PersonSurname] = '{pass.PersonSurname}', 
-                                [PersonPatronymic] = '{pass.PersonPatronymic}', [PassportNumber] = '{pass.PassportNumber}' 
+                                [PersonPatronymic] = '{pass.PersonPatronymic}', [PassportNumber] = '{pass.PassportNumber}', 
+                                [DateFrom] = '{pass.DateFrom.ToString("yyyy-MM-dd HH:mm:ss.fff")}', [DateTo] = '{pass.DateTo.ToString("yyyy-MM-dd HH:mm:ss.fff")}'  
                         WHERE guid = '{pass.Guid}'";
             using (SqlConnection connection = new SqlConnection(bd))
             {
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
-                    cmd.ExecuteNonQuery();
+                    return cmd.ExecuteNonQuery() == 1 ? true : false;
                 }
             };
         }
 
-        public static void Delete(string guid)
+        public static bool Delete(string guid)
         {
             var sql = $@"DELETE FROM Passes
                         WHERE guid = '{guid}'";
@@ -95,7 +95,7 @@ namespace RestApi
                 connection.Open();
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
-                    cmd.ExecuteNonQuery();
+                    return cmd.ExecuteNonQuery() == 1 ? true : false;
                 }
             };
         }
