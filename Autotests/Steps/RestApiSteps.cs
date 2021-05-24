@@ -27,7 +27,7 @@ namespace Autotests.Steps
                 DateTo = DateTime.Now.AddDays(1).Add(new TimeSpan(23, 59, 59))
             };
 
-            var response = Utils.Post(Utils.GetUri(Utils.host), JsonSerializer.Serialize(Utils.Pass));
+            var response = Utils.Post(Utils.GetUri(), JsonSerializer.Serialize(Utils.Pass));
             Utils.Pass.Guid = response.Content.ReadAsStringAsync().Result;
         }
     }
