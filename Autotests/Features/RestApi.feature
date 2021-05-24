@@ -10,12 +10,14 @@ Feature: RestApi
 	Scenario: Post
 		* create post reqest
 
-	#@2305211844
-	#Scenario: Put
-	#	* create post reqest
+	@2305211844
+	Scenario: Put
+		* create post reqest
+		* check put
 
-	#@2305211846
-	#Scenario: Delete
-	#	* create post reqest
+	@2305211846
+	Scenario: Delete
+		* create post reqest
+		* check delete
 
 

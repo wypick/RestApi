@@ -49,9 +49,6 @@ namespace RestApi
 
         public static string Post(Pass pass)
         {
-            var windowsTime = "19-05-2021";
-            var time = DateTime.Parse(windowsTime);
-
             var guid = Utils.GetValidGuid();
             var sql = $@"INSERT INTO [dbo].[Passes] ([GUID], [PersonName], [PersonSurname], [PersonPatronymic], [PassportNumber], [DateFrom], [DateTo]) 
                             VALUES ('{guid}', '{pass.PersonName}', '{pass.PersonSurname}', 
