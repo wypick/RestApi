@@ -9,11 +9,24 @@ namespace Autotests
     public class Utils
     {
         public static string host = "127.0.0.1:5000/pass";
+        //public static string guid = "/";
         static readonly HttpClient client = new HttpClient();
 
-        public static Uri GetUri(string path)
+        public static Pass Pass { get; set; }
+
+        public static Uri GetUri(string path = null)
         {
-            Uri uri = new Uri($"http://{host}");
+            Uri uri;
+
+            if (path != null)
+            {
+                uri = new Uri($"http://{host}/{path}");
+            }
+            else
+            {
+                uri = new Uri($"http://{host}");
+            }
+           
             return uri;
         }
 
@@ -25,6 +38,8 @@ namespace Autotests
             if (result.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception($"Failed to POST data: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
 
+            Console.WriteLine($"Result: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
+
             return result;
         }
 
@@ -35,7 +50,7 @@ namespace Autotests
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception($"Failed to PUT data: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
-
+           
             return result;
         }
 
@@ -56,6 +71,8 @@ namespace Autotests
             if (result.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception($"Failed to GET data: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
 
+            Console.WriteLine($"Result: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
+
             return result;
         }
 
@@ -74,7 +91,7 @@ namespace Autotests
             }
             else
             {
-                characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+                characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
             }
            
             StringBuilder result = new StringBuilder(length);
