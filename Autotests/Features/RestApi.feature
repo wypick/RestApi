@@ -1,4 +1,5 @@
-﻿Feature: RestApi
+﻿@all
+Feature: RestApi
 
 	@2305211842
 	Scenario: Get
