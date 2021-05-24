@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.1401
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApi", "Rest-api\RestApi.csproj", "{66E4AF82-A505-4B38-A46A-8D57CAA3D818}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autotests", "Autotests\Autotests.csproj", "{2D0EBDA5-32B0-43A5-B9BE-D28ECD9AEE78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{66E4AF82-A505-4B38-A46A-8D57CAA3D818}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66E4AF82-A505-4B38-A46A-8D57CAA3D818}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66E4AF82-A505-4B38-A46A-8D57CAA3D818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D0EBDA5-32B0-43A5-B9BE-D28ECD9AEE78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D0EBDA5-32B0-43A5-B9BE-D28ECD9AEE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D0EBDA5-32B0-43A5-B9BE-D28ECD9AEE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D0EBDA5-32B0-43A5-B9BE-D28ECD9AEE78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
