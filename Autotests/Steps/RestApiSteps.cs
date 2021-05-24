@@ -51,6 +51,8 @@ namespace Autotests.Steps
                 DateTo = DateTime.Now.AddDays(1)
             };
 
+            Console.WriteLine(JsonSerializer.Serialize(pass));
+
             Utils.Put(Utils.GetUri(), JsonSerializer.Serialize(pass));
 
             var response = Utils.Get(Utils.GetUri(Utils.Pass.Guid));
