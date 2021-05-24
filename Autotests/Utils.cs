@@ -20,7 +20,7 @@ namespace Autotests
 
             if (path != null)
             {
-                uri = new Uri($"http://{host}/"+ path);
+                uri = new Uri($"http://{host}/{path.Replace('"', ' ').Trim()}");
             }
             else
             {
