@@ -13,7 +13,7 @@ namespace Autotests
 
         public static Uri GetUri(string path)
         {
-            Uri uri = new Uri($"https://{host}");
+            Uri uri = new Uri($"http://{host}");
             return uri;
         }
 
