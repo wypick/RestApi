@@ -50,7 +50,9 @@ namespace Autotests
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception($"Failed to PUT data: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
-           
+
+            Console.WriteLine($"Result: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
+
             return result;
         }
 
@@ -60,6 +62,8 @@ namespace Autotests
 
             if (result.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception($"Failed to Delete data: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
+
+            Console.WriteLine($"Result: ({result.StatusCode}): {result.Content.ReadAsStringAsync().Result}");
 
             return result;
         }

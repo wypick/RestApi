@@ -2,13 +2,14 @@
 Feature: RestApi
 
 	@2305211842
-	Scenario: Get
+	Scenario: Post/Get
 		* create post reqest
-		* check get
+		* check get/post
 
-	@2305211843
-	Scenario: Post
+	@2305211842
+	Scenario: Validate date
 		* create post reqest
+		* check validate date
 
 	@2305211844
 	Scenario: Put
@@ -19,5 +20,3 @@ Feature: RestApi
 	Scenario: Delete
 		* create post reqest
 		* check delete
-
-

@@ -7,11 +7,29 @@ namespace Autotests.Steps
     [Binding]
     public class RestApiSteps
     {
-        [Given(@"check get")]
-        public void GivenCheckGet()
+        [Given(@"check get/post")]
+        public void GivenCheckGetPost()
         {
             var response = Utils.Get(Utils.GetUri(Utils.Pass.Guid));
             Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+
+            if (response.Content.ReadAsStringAsync().Result.Equals(Utils.Pass))
+            {
+                throw new Exception("Полученные данные не равны отправленным");
+            }
+        }
+
+        [Given(@"check validate date")]
+        public void GivenCheckValidateDate()
+        {
+            var response = Utils.Get(Utils.GetUri("validate/"+ Utils.Pass.Guid));
+
+            var time = DateTime.Now;
+
+            if ((Utils.Pass.DateFrom > time) || (Utils.Pass.DateTo < time))
+            {
+                throw new Exception("Некорректный ответ, дата не валидна");
+            }
         }
 
         [Given(@"create post reqest")]
