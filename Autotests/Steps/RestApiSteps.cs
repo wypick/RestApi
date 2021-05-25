@@ -22,7 +22,7 @@ namespace Autotests.Steps
         [Given(@"check validate date")]
         public void GivenCheckValidateDate()
         {
-            var response = Utils.Get(Utils.GetUri("validate/"+ Utils.Pass.Guid));
+            var response = Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
 
             var time = DateTime.Now;
 

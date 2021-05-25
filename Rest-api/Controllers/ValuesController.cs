@@ -30,7 +30,7 @@ namespace Rest_api.Controllers
             var time = DateTime.Now;
             
             var result = DbUtils.Get(guid);
-            var a = result.DateTo.CompareTo(time);
+
             if (result == null)
             {
                 return NotFound("404(NOT FOUND)");

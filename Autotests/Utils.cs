@@ -9,25 +9,26 @@ namespace Autotests
     public class Utils
     {
         public static string host = "127.0.0.1:5000/pass";
-        //public static string guid = "/";
         static readonly HttpClient client = new HttpClient();
 
         public static Pass Pass { get; set; }
 
         public static Uri GetUri(string path = null)
         {
-            Uri uri;
 
             if (path != null)
             {
-                uri = new Uri($"http://{host}/{path.Replace('"', ' ').Trim()}");
+                return new Uri($"http://{host}/{path.Replace('"', ' ').Trim()}");
             }
             else
             {
-                uri = new Uri($"http://{host}");
+                return new Uri($"http://{host}");
             }
-           
-            return uri;
+        }
+
+        public static Uri GetUriValidate(string path)
+        {
+            return new Uri($"http://{host}/validate/{path.Replace('"', ' ').Trim()}");
         }
 
         public static HttpResponseMessage Post(Uri uri, string json)
