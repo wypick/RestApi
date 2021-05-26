@@ -1,6 +1,7 @@
 ﻿using System;
 using TechTalk.SpecFlow;
 using System.Text.Json;
+using System.Net.Http;
 
 namespace Autotests.Steps
 {
@@ -36,16 +37,16 @@ namespace Autotests.Steps
         [Given(@"check validate date")]
         public void GivenCheckValidateDate()
         {
+            HttpResponseMessage response = null;
+
             try
             {
-                Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
+                response = Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
             }
             catch (Exception)
             {
-                throw new Exception("Дата не валидна");
+                Console.WriteLine($"Ответ сервиса: ({response.StatusCode}): {response.Content.ReadAsStringAsync().Result}");
             }
-
-           // var response = Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
 
             var time = DateTime.Now;
 
