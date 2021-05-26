@@ -45,7 +45,7 @@ namespace Autotests.Steps
             }
             catch (Exception)
             {
-                Console.WriteLine($"Ответ сервиса: ({response.StatusCode}): {response.Content.ReadAsStringAsync().Result}");
+                Console.WriteLine($"Ответ сервиса: ({response.StatusCode})");
             }
 
             var time = DateTime.Now;
