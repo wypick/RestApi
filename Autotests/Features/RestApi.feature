@@ -11,6 +11,12 @@ Feature: RestApi
 		* create post reqest
 		* check validate date
 
+	@2305211843
+	Scenario: Validate date (not valid)
+		* create post reqest
+		* update with not valid date
+		* check validate date
+
 	@2305211844
 	Scenario: Put
 		* create post reqest

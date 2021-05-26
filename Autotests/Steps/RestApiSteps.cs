@@ -22,7 +22,16 @@ namespace Autotests.Steps
         [Given(@"check validate date")]
         public void GivenCheckValidateDate()
         {
-            var response = Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
+            try
+            {
+                Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
+            }
+            catch (Exception)
+            {
+                throw new Exception("Дата не валидна");
+            }
+
+           // var response = Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
 
             var time = DateTime.Now;
 
@@ -59,12 +68,23 @@ namespace Autotests.Steps
             var response = Utils.Delete(Utils.GetUri(Utils.Pass.Guid));
         }
 
+        [Given(@"update with not valid date")]
+        public void GivenUpdateWithNotValidDate()
+        {
+            Utils.Pass.DateFrom = DateTime.Now.AddDays(10);
+            Utils.Pass.DateTo = DateTime.Now.AddDays(11);
+
+            Console.WriteLine("Отправляемый объект в запросе PUT: " + JsonSerializer.Serialize(Utils.Pass));
+            Utils.Put(Utils.GetUri(), JsonSerializer.Serialize(Utils.Pass));
+        }
+
         [Given(@"check put")]
         public void GivenCheckPut()
         {
             var pass = new Pass()
             {
                 Guid = Utils.Pass.Guid,
+                PersonName = Utils.GenerateString(10, new Random()),
                 PersonSurname = Utils.GenerateString(10, new Random()),
                 PersonPatronymic = Utils.GenerateString(10, new Random()),
                 PassportNumber = Utils.GenerateString(10, new Random(), true),

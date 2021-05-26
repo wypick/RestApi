@@ -53,7 +53,8 @@ namespace RestApi
             var sql = $@"INSERT INTO [dbo].[Passes] ([GUID], [PersonName], [PersonSurname], [PersonPatronymic], [PassportNumber], [DateFrom], [DateTo]) 
                             VALUES ('{guid}', '{pass.PersonName}', '{pass.PersonSurname}', 
                                 '{pass.PersonPatronymic}', '{pass.PassportNumber}', '{pass.DateFrom.ToString("yyyy-MM-dd HH:mm:ss.fff")}',
-                                '{pass.DateTo.Add(new TimeSpan(23, 59, 59)).ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
+                                '{pass.DateTo.ToString("yyyy-MM-dd HH:mm:ss.fff")}')";
+            //Add(new TimeSpan(23, 59, 59))
             using (SqlConnection connection = new SqlConnection(bd))
             {
                 connection.Open();
