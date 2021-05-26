@@ -11,7 +11,7 @@ namespace Autotests.Steps
         public void GivenCheckGetPost()
         {
             var response = Utils.Get(Utils.GetUri(Utils.Pass.Guid));
-            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+            Console.WriteLine("Полученные данные в запросе GET: " + response.Content.ReadAsStringAsync().Result);
 
             if (response.Content.ReadAsStringAsync().Result.Equals(Utils.Pass))
             {
@@ -45,9 +45,12 @@ namespace Autotests.Steps
                 DateTo = DateTime.Now.AddDays(1)
             };
 
-            var response = Utils.Post(Utils.GetUri(), JsonSerializer.Serialize(Utils.Pass));
+            var pass = JsonSerializer.Serialize(Utils.Pass);
+            Console.WriteLine("Отправляемый объект в запросе POST: " + pass);
+
+            var response = Utils.Post(Utils.GetUri(), pass);
             Utils.Pass.Guid = response.Content.ReadAsStringAsync().Result;
-            Console.WriteLine(Utils.Pass.Guid);
+            Console.WriteLine("Полученный guid: " + Utils.Pass.Guid);
         }
 
         [Given(@"check delete")]
@@ -69,12 +72,15 @@ namespace Autotests.Steps
                 DateTo = DateTime.Now.AddDays(1)
             };
 
-            Console.WriteLine(JsonSerializer.Serialize(pass));
+            Console.WriteLine("Отправляемый объект в запросе PUT: " + JsonSerializer.Serialize(pass));
 
             Utils.Put(Utils.GetUri(), JsonSerializer.Serialize(pass));
 
             var response = Utils.Get(Utils.GetUri(Utils.Pass.Guid));
 
+            Console.WriteLine("Полученный объект в запросе GET после обновления: " + response.Content.ReadAsStringAsync().Result);
+
+            // проверяем обновились ли данные
             if (response.Content.ReadAsStringAsync().Result.Equals(pass))
             {
                 throw new Exception("Полученные данные не равны отправленным");
