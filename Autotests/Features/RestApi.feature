@@ -26,3 +26,7 @@ Feature: RestApi
 	Scenario: Delete
 		* create post reqest
 		* check delete
+
+	@2305211846
+	Scenario: Getuncorrect guid
+		* check get error

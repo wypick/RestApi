@@ -19,6 +19,20 @@ namespace Autotests.Steps
             }
         }
 
+        [Given(@"check get error")]
+        public void GivenCheckGetError()
+        {
+            try
+            {
+                Utils.Get(Utils.GetUri(Utils.GenerateString(10, new Random())));
+            }
+            catch (Exception)
+            {
+
+            }
+            
+        }
+
         [Given(@"check validate date")]
         public void GivenCheckValidateDate()
         {
@@ -58,7 +72,7 @@ namespace Autotests.Steps
             Console.WriteLine("Отправляемый объект в запросе POST: " + pass);
 
             var response = Utils.Post(Utils.GetUri(), pass);
-            Utils.Pass.Guid = response.Content.ReadAsStringAsync().Result;
+            Utils.Pass.Guid = JsonSerializer.Deserialize<string>(response.Content.ReadAsStringAsync().Result);
             Console.WriteLine("Полученный guid: " + Utils.Pass.Guid);
         }
 

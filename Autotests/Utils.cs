@@ -18,7 +18,7 @@ namespace Autotests
 
             if (path != null)
             {
-                return new Uri($"http://{host}/{path.Replace('"', ' ').Trim()}");
+                return new Uri($"http://{host}/{path}");
             }
             else
             {
@@ -28,7 +28,7 @@ namespace Autotests
 
         public static Uri GetUriValidate(string path)
         {
-            return new Uri($"http://{host}/validate/{path.Replace('"', ' ').Trim()}");
+            return new Uri($"http://{host}/validate/{path}");
         }
 
         public static HttpResponseMessage Post(Uri uri, string json)
