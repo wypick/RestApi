@@ -31,7 +31,6 @@ namespace Autotests.Steps
             {
                 Console.WriteLine("При запросе с несуществующим Guid ничего не было найдено");
             }
-            
         }
 
         [Given(@"check validate date")]
@@ -45,7 +44,7 @@ namespace Autotests.Steps
             }
             catch (Exception)
             {
-                Console.WriteLine($"Ответ сервиса: ({response.StatusCode})");
+                Console.WriteLine("");
             }
 
             var time = DateTime.Now;
