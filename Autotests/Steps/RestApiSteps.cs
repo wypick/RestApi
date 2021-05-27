@@ -6,15 +6,15 @@ using System.Net.Http;
 namespace Autotests.Steps
 {
     [Binding]
-    public class RestApiSteps
+    public class RestApiSteps : Utils
     {
         [Given(@"check get/post")]
         public void GivenCheckGetPost()
         {
-            var response = Utils.Get(Utils.GetUri(Utils.Pass.Guid));
+            var response = Get(GetUri(Pass.Guid));
             Console.WriteLine("Полученные данные в запросе GET: " + response.Content.ReadAsStringAsync().Result);
 
-            if (response.Content.ReadAsStringAsync().Result.Equals(Utils.Pass))
+            if (response.Content.ReadAsStringAsync().Result.Equals(Pass))
             {
                 throw new Exception("Полученные данные не равны отправленным");
             }
@@ -25,11 +25,11 @@ namespace Autotests.Steps
         {
             try
             {
-                Utils.Get(Utils.GetUri(Utils.GenerateString(10, new Random())));
+                Get(GetUri(GenerateString(10, new Random())));
             }
             catch (Exception)
             {
-
+                Console.WriteLine("При запросе с несуществующим Guid ничего не было найдено");
             }
             
         }
@@ -41,7 +41,7 @@ namespace Autotests.Steps
 
             try
             {
-                response = Utils.Get(Utils.GetUriValidate(Utils.Pass.Guid));
+                response = Get(GetUriValidate(Pass.Guid));
             }
             catch (Exception)
             {
@@ -50,7 +50,7 @@ namespace Autotests.Steps
 
             var time = DateTime.Now;
 
-            if ((Utils.Pass.DateFrom > time) || (Utils.Pass.DateTo < time))
+            if ((Pass.DateFrom > time) || (Pass.DateTo < time))
             {
                 throw new Exception("Некорректный ответ, дата не валидна");
             }
@@ -59,38 +59,47 @@ namespace Autotests.Steps
         [Given(@"create post reqest")]
         public void GivenCreatePostReqest()
         {
-            Utils.Pass = new Pass()
+            Pass = new Pass()
             {
-                PersonName = Utils.GenerateString(10, new Random()),
-                PersonSurname = Utils.GenerateString(10, new Random()),
-                PersonPatronymic = Utils.GenerateString(10, new Random()),
-                PassportNumber = Utils.GenerateString(10, new Random(), true),
+                PersonName = GenerateString(10, new Random()),
+                PersonSurname = GenerateString(10, new Random()),
+                PersonPatronymic = GenerateString(10, new Random()),
+                PassportNumber = GenerateString(10, new Random(), true),
                 DateFrom = DateTime.Now,
                 DateTo = DateTime.Now.AddDays(1)
             };
 
-            var pass = JsonSerializer.Serialize(Utils.Pass);
+            var pass = JsonSerializer.Serialize(Pass);
             Console.WriteLine("Отправляемый объект в запросе POST: " + pass);
 
-            var response = Utils.Post(Utils.GetUri(), pass);
-            Utils.Pass.Guid = JsonSerializer.Deserialize<string>(response.Content.ReadAsStringAsync().Result);
-            Console.WriteLine("Полученный guid: " + Utils.Pass.Guid);
+            var response = Post(GetUri(), pass);
+            Pass.Guid = JsonSerializer.Deserialize<string>(response.Content.ReadAsStringAsync().Result);
+            Console.WriteLine("Полученный guid: " + Pass.Guid);
         }
 
         [Given(@"check delete")]
         public void GivenCheckDelete()
         {
-            var response = Utils.Delete(Utils.GetUri(Utils.Pass.Guid));
+            var response = Delete(GetUri(Pass.Guid));
+
+            try
+            {
+                Get(GetUri(Pass.Guid));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("При запросе с несуществующим Guid ничего не было найдено");
+            }
         }
 
         [Given(@"update with not valid date")]
         public void GivenUpdateWithNotValidDate()
         {
-            Utils.Pass.DateFrom = DateTime.Now.AddDays(10);
-            Utils.Pass.DateTo = DateTime.Now.AddDays(11);
+            Pass.DateFrom = DateTime.Now.AddDays(10);
+            Pass.DateTo = DateTime.Now.AddDays(11);
 
-            Console.WriteLine("Отправляемый объект в запросе PUT: " + JsonSerializer.Serialize(Utils.Pass));
-            Utils.Put(Utils.GetUri(), JsonSerializer.Serialize(Utils.Pass));
+            Console.WriteLine("Отправляемый объект в запросе PUT: " + JsonSerializer.Serialize(Pass));
+            Put(GetUri(), JsonSerializer.Serialize(Pass));
         }
 
         [Given(@"check put")]
@@ -98,20 +107,20 @@ namespace Autotests.Steps
         {
             var pass = new Pass()
             {
-                Guid = Utils.Pass.Guid,
-                PersonName = Utils.GenerateString(10, new Random()),
-                PersonSurname = Utils.GenerateString(10, new Random()),
-                PersonPatronymic = Utils.GenerateString(10, new Random()),
-                PassportNumber = Utils.GenerateString(10, new Random(), true),
+                Guid = Pass.Guid,
+                PersonName = GenerateString(10, new Random()),
+                PersonSurname = GenerateString(10, new Random()),
+                PersonPatronymic = GenerateString(10, new Random()),
+                PassportNumber = GenerateString(10, new Random(), true),
                 DateFrom = DateTime.Now,
                 DateTo = DateTime.Now.AddDays(1)
             };
 
             Console.WriteLine("Отправляемый объект в запросе PUT: " + JsonSerializer.Serialize(pass));
 
-            Utils.Put(Utils.GetUri(), JsonSerializer.Serialize(pass));
+            Put(GetUri(), JsonSerializer.Serialize(pass));
 
-            var response = Utils.Get(Utils.GetUri(Utils.Pass.Guid));
+            var response = Get(GetUri(Pass.Guid));
 
             Console.WriteLine("Полученный объект в запросе GET после обновления: " + response.Content.ReadAsStringAsync().Result);
 

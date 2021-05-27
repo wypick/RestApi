@@ -16,13 +16,6 @@ namespace Rest_api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET http://host:port/pass/validate/{guid}
         [HttpGet("validate/{guid}")]
         public ActionResult<string> ValidateGet(string guid)
