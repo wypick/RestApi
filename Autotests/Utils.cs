@@ -81,11 +81,6 @@ namespace Autotests
             return result;
         }
 
-       /* public static void Init()
-        {
-            Rnd = new Random();
-        }*/
-
         public static string GenerateString(int length, Random random, bool? number = null)
         {
             string characters;

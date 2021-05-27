@@ -15,7 +15,7 @@ Feature: RestApi
 	Scenario: Validate date (not valid)
 		* create post reqest
 		* update with not valid date
-		* check validate date
+		* check validate date not valid
 
 	@2305211844
 	Scenario: Put
@@ -28,5 +28,5 @@ Feature: RestApi
 		* check delete
 
 	@2305211846
-	Scenario: Getuncorrect guid
+	Scenario: Get uncorrect guid
 		* check get error

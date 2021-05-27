@@ -36,22 +36,26 @@ namespace Autotests.Steps
         [Given(@"check validate date")]
         public void GivenCheckValidateDate()
         {
-            HttpResponseMessage response = null;
-
-            try
-            {
-                response = Get(GetUriValidate(Pass.Guid));
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("");
-            }
+            Get(GetUriValidate(Pass.Guid));
 
             var time = DateTime.Now;
 
             if ((Pass.DateFrom > time) || (Pass.DateTo < time))
             {
                 throw new Exception("Некорректный ответ, дата не валидна");
+            }
+        }
+
+        [Given(@"check validate date not valid")]
+        public void GivenCheckValidateDateNotValid()
+        {
+            try
+            {
+                Get(GetUriValidate(Pass.Guid));
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Дата невалидна");
             }
         }
 
