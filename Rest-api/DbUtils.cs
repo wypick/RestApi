@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MySqlConnector;
 using System.Data;
+using Dapper;
 
 namespace RestApi
 {
@@ -21,7 +22,9 @@ namespace RestApi
             using (SqlConnection connection = new SqlConnection(bd))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand(sql, connection))
+
+                var result = connection.QuerySingleOrDefault<Pass>(sql);
+                /*using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
                     Pass result = null;
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -43,13 +46,15 @@ namespace RestApi
                     reader.Close();
 
                     return result;
-                }
+                }*/
+                return result;
             };
         }
 
         public static string Post(Pass pass)
         {
-            var guid = Utils.GetValidGuid();
+            //var guid = Utils.GetValidGuid();
+            var guid = Guid.NewGuid().ToString();
             var sql = $@"INSERT INTO [dbo].[Passes] ([GUID], [PersonName], [PersonSurname], [PersonPatronymic], [PassportNumber], [DateFrom], [DateTo]) 
                             VALUES ('{guid}', '{pass.PersonName}', '{pass.PersonSurname}', 
                                 '{pass.PersonPatronymic}', '{pass.PassportNumber}', '{pass.DateFrom.ToString("yyyy-MM-dd HH:mm:ss.fff")}',
